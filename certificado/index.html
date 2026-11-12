@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Certificado Oficial do Polo Norte 🎅</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Mountains+of+Christmas:wght@700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #2c0909; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Poppins', sans-serif; color: #fff; padding: 20px; box-sizing: border-box; }
+    .cert { position: relative; width: 100%; max-width: 800px; aspect-ratio: 1.414; background: #fffdf5 url('/assets/v2/img/certificado-bg.jpg') center/cover no-repeat; border: 12px solid #b80d22; box-shadow: 0 15px 40px rgba(0,0,0,0.6); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #3a1a12; padding: 30px; box-sizing: border-box; }
+    .cert-sub { font-family: 'Poppins', sans-serif; font-size: 16px; text-transform: uppercase; letter-spacing: 3px; color: #b80d22; font-weight: 700; margin: 0 0 6px; }
+    h1 { font-family: 'Mountains of Christmas', cursive; font-size: 46px; margin: 0 0 16px; color: #1f9d55; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+    .msg { font-size: 16px; max-width: 600px; line-height: 1.6; margin: 0 0 20px; color: #5a3a30; }
+    .kid-name { font-family: 'Dancing Script', cursive; font-size: 52px; color: #b80d22; margin: 6px 0; border-bottom: 2px dashed #b80d22; padding: 0 20px; display: inline-block; }
+    .seal { display: flex; justify-content: space-between; align-items: flex-end; width: 100%; max-width: 620px; margin-top: 20px; }
+    .sig { font-family: 'Dancing Script', cursive; font-size: 26px; border-top: 1px solid #8a6a60; padding-top: 4px; color: #3a1a12; }
+    .badge-gold { background: #ffd54a; color: #7d0716; padding: 8px 16px; border-radius: 999px; font-weight: 700; font-size: 14px; border: 2px solid #b80d22; }
+    .btn-print { margin-top: 24px; background: #1f9d55; color: #fff; border: none; padding: 12px 28px; border-radius: 999px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.3); transition: transform 0.2s; }
+    .btn-print:hover { transform: scale(1.05); }
+    @media print {
+      body { background: transparent; padding: 0; }
+      .btn-print { display: none; }
+      .cert { border: 8px solid #b80d22; box-shadow: none; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cert" id="cert">
+    <div class="cert-sub">Tribunal Mágico do Polo Norte</div>
+    <h1>Certificado de Bom Comportamento</h1>
+    <div class="msg">Este certificado oficial confirma que o bom velhinho revisou a lista das crianças bem-comportadas e teve a honra de incluir com muito orgulho:</div>
+    <div class="kid-name" id="kidName">Anjinho de Natal</div>
+    <div class="msg">Por demonstrar bondade, alegria, ajudar a família e espalhar sorrisos ao longo de todo o ano de 2026.</div>
+    <div class="seal">
+      <div>
+        <div class="sig">Papai Noel 🎅</div>
+        <small style="color:#8a6a60">Polo Norte</small>
+      </div>
+      <div class="badge-gold">⭐ APROVADO ⭐</div>
+      <div>
+        <div class="sig">Duende Chefe 🧝</div>
+        <small style="color:#8a6a60">Fábrica de Brinquedos</small>
+      </div>
+    </div>
+  </div>
+  <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Salvar em PDF</button>
+
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const nome = qs.get('nome') || 'Anjinho de Natal';
+    document.getElementById('kidName').textContent = nome;
+    document.title = 'Certificado Oficial do Polo Norte 🎅 | ' + nome;
+  </script>
+</body>
+</html>
