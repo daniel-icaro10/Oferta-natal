@@ -118,6 +118,8 @@ app.get('/chamada', (req, res) => res.sendFile(path.join(__dirname, 'chamada.htm
 app.get('/piloto-whats', (req, res) => res.sendFile(path.join(__dirname, 'piloto-whats.html')));
 app.get('/obrigado', (req, res) => res.sendFile(path.join(__dirname, 'obrigado.html')));
 app.get('/area', (req, res) => res.sendFile(path.join(__dirname, 'area.html')));
+app.get('/termos', (req, res) => res.sendFile(path.join(__dirname, 'termos.html')));
+app.get('/politica', (req, res) => res.sendFile(path.join(__dirname, 'politica.html')));
 
 // ==========================================
 // PAINEL DE ADMINISTRAÇÃO (/admin)
