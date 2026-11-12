@@ -1,0 +1,173 @@
+[
+ {
+  "nome": "Miguel",
+  "artigo": "o",
+  "inicio": 4.72,
+  "pausas": [
+   {
+    "fala": 10.5,
+    "para": 11.38,
+    "volta": 12.02,
+    "loop": null,
+    "p": "Você tá me ouvindo?"
+   },
+   {
+    "fala": 15.48,
+    "para": 16.8,
+    "volta": 17.73,
+    "loop": null,
+    "p": "Responde bem alto!"
+   },
+   {
+    "fala": 38.26,
+    "para": 38.9,
+    "volta": 40.12,
+    "loop": "3",
+    "p": "Já achou o presente?"
+   },
+   {
+    "fala": 43.76,
+    "para": 44.76,
+    "volta": 45.66,
+    "loop": "4",
+    "p": "Mostra pra câmera!"
+   },
+   {
+    "fala": 72.02,
+    "para": 73.38,
+    "volta": 73.98,
+    "loop": "5",
+    "p": "Se comportou, né?"
+   },
+   {
+    "fala": 84.52,
+    "para": 85.72,
+    "volta": 87.98,
+    "loop": "6",
+    "p": "Faz o Ho, ho, ho!"
+   },
+   {
+    "fala": 97.54,
+    "para": 98.5,
+    "volta": 99.02,
+    "loop": "7",
+    "p": "Combinado?"
+   }
+  ],
+  "arquivo": "/assets/piloto/base/miguel.mp4"
+ },
+ {
+  "nome": "Liz",
+  "artigo": "a",
+  "inicio": 4.22,
+  "pausas": [
+   {
+    "fala": 9.84,
+    "para": 11.2,
+    "volta": 11.6,
+    "loop": null,
+    "p": "Você tá me ouvindo?"
+   },
+   {
+    "fala": 14.54,
+    "para": 15.38,
+    "volta": 16.52,
+    "loop": null,
+    "p": "Responde bem alto!"
+   },
+   {
+    "fala": 37.06,
+    "para": 37.7,
+    "volta": 38.92,
+    "loop": "3",
+    "p": "Já achou o presente?"
+   },
+   {
+    "fala": 42.56,
+    "para": 43.56,
+    "volta": 44.46,
+    "loop": "4",
+    "p": "Mostra pra câmera!"
+   },
+   {
+    "fala": 70.82,
+    "para": 72.18,
+    "volta": 72.78,
+    "loop": "5",
+    "p": "Se comportou, né?"
+   },
+   {
+    "fala": 83.32,
+    "para": 84.52,
+    "volta": 86.78,
+    "loop": "6",
+    "p": "Faz o Ho, ho, ho!"
+   },
+   {
+    "fala": 96.34,
+    "para": 97.3,
+    "volta": 97.82,
+    "loop": "7",
+    "p": "Combinado?"
+   }
+  ],
+  "arquivo": "/assets/piloto/base/liz.mp4"
+ },
+ {
+  "nome": "Karoline",
+  "artigo": "a",
+  "inicio": 4.5,
+  "pausas": [
+   {
+    "fala": 10.4,
+    "para": 11.64,
+    "volta": 12.1,
+    "loop": null,
+    "p": "Você tá me ouvindo?"
+   },
+   {
+    "fala": 15.48,
+    "para": 16.88,
+    "volta": 17.38,
+    "loop": null,
+    "p": "Responde bem alto!"
+   },
+   {
+    "fala": 38.06,
+    "para": 38.7,
+    "volta": 39.92,
+    "loop": "3",
+    "p": "Já achou o presente?"
+   },
+   {
+    "fala": 43.56,
+    "para": 44.56,
+    "volta": 45.46,
+    "loop": "4",
+    "p": "Mostra pra câmera!"
+   },
+   {
+    "fala": 71.82,
+    "para": 73.18,
+    "volta": 73.78,
+    "loop": "5",
+    "p": "Se comportou, né?"
+   },
+   {
+    "fala": 84.32,
+    "para": 85.52,
+    "volta": 87.78,
+    "loop": "6",
+    "p": "Faz o Ho, ho, ho!"
+   },
+   {
+    "fala": 97.34,
+    "para": 98.3,
+    "volta": 98.82,
+    "loop": "7",
+    "p": "Combinado?"
+   }
+  ],
+  "arquivo": "/assets/piloto/base/karoline.mp4"
+ }
+]

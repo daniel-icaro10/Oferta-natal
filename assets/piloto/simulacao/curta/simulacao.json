@@ -1,0 +1,233 @@
+{
+ "miguel": {
+  "nome": "Miguel",
+  "artigo": "o",
+  "arquivo": "/assets/piloto/simulacao/curta/miguel.mp4",
+  "seg": {
+   "A": [
+    0.0,
+    18.12
+   ],
+   "glitch": [
+    18.12,
+    18.72
+   ],
+   "ligacao": [
+    18.72,
+    71.36
+   ],
+   "B": [
+    71.36,
+    101.24
+   ],
+   "q1": 14.61,
+   "c1": [
+    0.0,
+    14.61
+   ],
+   "c2": [
+    15.174,
+    18.12
+   ],
+   "c3": [
+    71.36,
+    86.417
+   ],
+   "q2": 86.417,
+   "c4": [
+    86.86,
+    101.24
+   ]
+  },
+  "pausas": [
+   {
+    "fala": 24.5,
+    "para": 25.38,
+    "volta": 26.02,
+    "loop": null,
+    "p": "Você tá me ouvindo?"
+   },
+   {
+    "fala": 29.48,
+    "para": 30.8,
+    "volta": 31.73,
+    "loop": null,
+    "p": "Responde bem alto!"
+   },
+   {
+    "fala": 52.26,
+    "para": 52.9,
+    "volta": 54.12,
+    "loop": "3",
+    "p": "Já achou o presente?"
+   },
+   {
+    "fala": 57.76,
+    "para": 58.76,
+    "volta": 59.66,
+    "loop": "4",
+    "p": "Mostra pra câmera!"
+   }
+  ],
+  "ilum": 70.2,
+  "fimIlum": {
+   "para": 70.35,
+   "loop": "7",
+   "morph": "/assets/piloto/base/curta/ilum-miguel.mp4"
+  }
+ },
+ "liz": {
+  "nome": "Liz",
+  "artigo": "a",
+  "arquivo": "/assets/piloto/simulacao/curta/liz.mp4",
+  "seg": {
+   "A": [
+    0.0,
+    18.12
+   ],
+   "glitch": [
+    18.12,
+    18.72
+   ],
+   "ligacao": [
+    18.72,
+    70.68
+   ],
+   "B": [
+    70.68,
+    100.56
+   ],
+   "q1": 14.61,
+   "c1": [
+    0.0,
+    14.61
+   ],
+   "c2": [
+    15.174,
+    18.12
+   ],
+   "c3": [
+    70.68,
+    85.737
+   ],
+   "q2": 85.737,
+   "c4": [
+    86.18,
+    100.56
+   ]
+  },
+  "pausas": [
+   {
+    "fala": 24.34,
+    "para": 25.7,
+    "volta": 26.1,
+    "loop": null,
+    "p": "Você tá me ouvindo?"
+   },
+   {
+    "fala": 29.04,
+    "para": 29.88,
+    "volta": 31.02,
+    "loop": null,
+    "p": "Responde bem alto!"
+   },
+   {
+    "fala": 51.56,
+    "para": 52.2,
+    "volta": 53.42,
+    "loop": "3",
+    "p": "Já achou o presente?"
+   },
+   {
+    "fala": 57.06,
+    "para": 58.06,
+    "volta": 58.96,
+    "loop": "4",
+    "p": "Mostra pra câmera!"
+   }
+  ],
+  "ilum": 69.5,
+  "fimIlum": {
+   "para": 69.65,
+   "loop": "7",
+   "morph": "/assets/piloto/base/curta/ilum-liz.mp4"
+  }
+ },
+ "karoline": {
+  "nome": "Karoline",
+  "artigo": "a",
+  "arquivo": "/assets/piloto/simulacao/curta/karoline.mp4",
+  "seg": {
+   "A": [
+    0.0,
+    18.12
+   ],
+   "glitch": [
+    18.12,
+    18.72
+   ],
+   "ligacao": [
+    18.72,
+    71.4
+   ],
+   "B": [
+    71.4,
+    101.28
+   ],
+   "q1": 14.61,
+   "c1": [
+    0.0,
+    14.61
+   ],
+   "c2": [
+    15.174,
+    18.12
+   ],
+   "c3": [
+    71.4,
+    86.457
+   ],
+   "q2": 86.457,
+   "c4": [
+    86.9,
+    101.28
+   ]
+  },
+  "pausas": [
+   {
+    "fala": 24.62,
+    "para": 25.86,
+    "volta": 26.32,
+    "loop": null,
+    "p": "Você tá me ouvindo?"
+   },
+   {
+    "fala": 29.7,
+    "para": 31.1,
+    "volta": 31.6,
+    "loop": null,
+    "p": "Responde bem alto!"
+   },
+   {
+    "fala": 52.28,
+    "para": 52.92,
+    "volta": 54.14,
+    "loop": "3",
+    "p": "Já achou o presente?"
+   },
+   {
+    "fala": 57.78,
+    "para": 58.78,
+    "volta": 59.68,
+    "loop": "4",
+    "p": "Mostra pra câmera!"
+   }
+  ],
+  "ilum": 70.22,
+  "fimIlum": {
+   "para": 70.37,
+   "loop": "7",
+   "morph": "/assets/piloto/base/curta/ilum-karoline.mp4"
+  }
+ }
+}

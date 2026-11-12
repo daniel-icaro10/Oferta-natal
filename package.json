@@ -1,0 +1,14 @@
+{
+  "name": "ligacao-papai-noel-clone",
+  "version": "1.0.0",
+  "description": "Clone completo do funil de oferta Ligação do Papai Noel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
+  }
+}

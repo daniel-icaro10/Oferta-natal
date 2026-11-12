@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/area", "destination": "/area.html" },
+    { "source": "/obrigado", "destination": "/obrigado.html" },
+    { "source": "/chamada", "destination": "/chamada.html" },
+    { "source": "/piloto-whats", "destination": "/piloto-whats.html" }
+  ]
+}
