@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<script src="/config.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Ligação do Papai Noel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/v2/style.css?v=v2t3">
+<script>if (/iP(hone|od|ad)/.test(navigator.userAgent) && /Safari/.test(navigator.userAgent) && !/CriOS|FxiOS|Instagram|FBAN|FBAV/.test(navigator.userAgent)) document.documentElement.classList.add('ios-safari');</script>
+<style>
+  /* camadas da ligação (mesmo palco 9:16 do funil) */
+  .espera,.morph,.clip{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none}
+  .espera{transition:opacity .45s ease}.espera.seco{transition:none}
+  .espera.on,.morph.on,.clip.on{opacity:1}
+  .clip{background:transparent}
+  /* "ouvindo" — discreto, acima da barra de controles */
+  #ouv{position:absolute;left:50%;bottom:calc(104px + var(--sb));transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:9px 16px 9px 10px;
+    border-radius:999px;background:rgba(11,20,26,.62);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:14px;font-weight:600;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+  #ouv.on{opacity:1}
+  .mic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.16);display:grid;place-items:center;position:relative;font-size:15px}
+  .mic::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--green);transform:scale(var(--n,1));opacity:var(--o,0);transition:transform .08s,opacity .08s}
+  #ouv.falando .mic{background:var(--green)}
+  /* pergunta Sim / Não */
+  #pergunta{position:absolute;left:20px;right:20px;bottom:calc(158px + var(--sb));text-align:center;pointer-events:none;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s}
+  #pergunta.on{opacity:1;transform:none}
+  #pergunta b{display:inline-block;padding:12px 22px;border-radius:999px;background:linear-gradient(180deg,#fff2b0 0%,var(--gold) 45%,#f0a800 100%);color:#7a0a14;font-size:19px;font-weight:800;box-shadow:0 6px 0 #9a6a00,0 12px 22px rgba(0,0,0,.45)}
+  #pergunta small{display:block;margin-top:12px;font-size:13px;opacity:.9;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+  /* nome */
+  .prep-box p{margin:0 0 14px;opacity:.85;font-size:15px}
+  #nome{width:100%;padding:16px 18px;border-radius:18px;border:2px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:#fff;font:700 20px var(--font);text-align:center;margin-bottom:18px;outline:none}
+  #nome:focus{border-color:var(--gold)}
+  #nome::placeholder{color:rgba(255,255,255,.55);font-weight:600}
+  .fim-box{position:relative;width:100%;max-width:360px;text-align:center}
+  .fim-box h2{font-family:"Dancing Script",cursive;font-size:42px;margin:0 0 8px;color:var(--gold)}
+  .fim-box pre{text-align:left;font:12px/1.5 var(--font);background:rgba(255,255,255,.08);padding:12px;border-radius:14px;white-space:pre-wrap;margin:14px 0 22px}
+  #bVol{position:absolute;left:12px;top:calc(84px + env(safe-area-inset-top));display:flex;align-items:center;gap:8px;padding:8px 12px;border:0;border-radius:999px;background:rgba(11,20,26,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);font-size:16px}
+  #volBar{display:flex;align-items:flex-end;gap:3px;height:16px}
+  #volBar b{width:4px;border-radius:2px;background:rgba(255,255,255,.3)}#volBar b:nth-child(1){height:5px}#volBar b:nth-child(2){height:8px}#volBar b:nth-child(3){height:12px}#volBar b:nth-child(4){height:16px}
+  #volBar b.on{background:#fff}
+  #dbg{pointer-events:none;position:absolute;left:8px;right:8px;top:calc(70px + env(safe-area-inset-top));font:11px/1.35 ui-monospace,Menlo,monospace;background:rgba(0,0,0,.6);padding:6px 8px;border-radius:8px;white-space:pre-wrap;max-height:30vh;overflow:auto;z-index:30}
+</style>
+</head>
+<body>
+<main class="stage"><div class="screen" id="screen">
+  <div class="call" id="callRoot">
+
+    <!-- nome da criança -->
+    <div class="prep" id="prep">
+      <div class="inc-bg" style="background-image:url(/assets/img/avatar.jpg)"></div>
+      <div class="prep-box">
+        <div class="prep-avatar"><img src="/assets/img/avatar.jpg" alt=""></div>
+        <h2>O Papai Noel vai ligar! 🎅</h2>
+        <p>Qual é o nome da criança?</p>
+        <input id="nome" placeholder="Digite o nome" autocomplete="off" autocapitalize="words" maxlength="30">
+        <button class="btn3d pulse" id="bPrep" type="button">📞 Ligar para o Papai Noel</button>
+        <p id="erroMic" style="color:#ffb3b3;margin-top:14px" hidden></p>
+        <p style="font-size:11px;opacity:.45;margin-top:18px">versão 27 · <span id="sid"></span></p>
+      </div>
+    </div>
+
+    <!-- chamada recebida -->
+    <div class="incoming" id="inc" hidden>
+      <div class="inc-bg" style="background-image:url(/assets/img/avatar.jpg)"></div>
+      <div class="inc-lock">🔒 Criptografada de ponta a ponta</div>
+      <div class="inc-center">
+        <div class="inc-avatar"><img src="/assets/img/avatar.jpg" alt=""></div>
+        <div class="inc-name">Papai Noel 🎅</div>
+        <div class="inc-sub sub" id="incSub">Chamada de vídeo recebida…</div>
+      </div>
+      <div class="inc-actions">
+        <div class="inc-btn"><button class="round red" id="bRecusa" type="button" aria-label="Recusar"><svg viewBox="0 0 24 24"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1 0-1.41C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></button><span>Recusar</span></div>
+        <div class="inc-btn"><button class="round green pulse" id="bAtende" type="button" aria-label="Atender"><svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></button><span>Atender</span></div>
+      </div>
+    </div>
+
+    <!-- em chamada -->
+    <div id="call" hidden style="position:absolute;inset:0">
+      <video id="v" playsinline preload="auto"></video>
+      <div id="camadas"><video class="espera" id="espera-p1" muted loop playsinline preload="auto"></video><video class="espera" id="espera-p3" muted loop playsinline preload="auto"></video><video class="espera" id="espera-3" muted loop playsinline preload="auto"></video><video class="espera" id="espera-4" muted loop playsinline preload="auto"></video><video class="espera" id="espera-5" muted loop playsinline preload="auto"></video><video class="espera" id="espera-6" muted loop playsinline preload="auto"></video><video class="espera" id="espera-7" muted loop playsinline preload="auto"></video><video class="morph" id="morph-p1-c2" muted playsinline preload="auto"></video><video class="morph" id="morph-p1-c3" muted playsinline preload="auto"></video><video class="morph" id="morph-p3-c2" muted playsinline preload="auto"></video><video class="morph" id="morph-p3-c4" muted playsinline preload="auto"></video><video class="morph" id="morph-3" muted playsinline preload="auto"></video><video class="morph" id="morph-4" muted playsinline preload="auto"></video><video class="morph" id="morph-5" muted playsinline preload="auto"></video><video class="morph" id="morph-6" muted playsinline preload="auto"></video><video class="morph" id="morph-7" muted playsinline preload="auto"></video></div>
+      <div class="incall">
+        <div class="ic-top"><div class="ic-name">Papai Noel 🎅</div><div class="ic-time" id="tempo">00:00</div></div>
+
+        <div class="self on" id="self"><video id="eu" playsinline webkit-playsinline muted autoplay></video><div class="self-off"><span>📷</span>Câmera desligada</div></div>
+        <div id="pergunta"><b>Responda: Sim ou Não</b><small>fale em voz alta 🎙️</small></div>
+        <div id="ouv"><div class="mic">🎙️</div><span id="ouvTxt">Papai Noel está ouvindo…</span></div>
+        <div class="ic-bar" id="icBar">
+          <button class="ic-b" id="bFlip" type="button" aria-label="Virar câmera"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-5 11.5V14H9v2.5L5.5 13 9 9.5V12h6V9.5l3.5 3.5-3.5 3.5z"/></svg></button>
+          <button class="ic-b" id="bCam" type="button" aria-label="Câmera"><svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+          <button class="ic-b" id="bMic" type="button" aria-label="Microfone"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></button>
+          <button class="ic-b end" id="bEnd" type="button" aria-label="Desligar"><svg viewBox="0 0 24 24"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1 0-1.41C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></button>
+        </div>
+      </div>
+      <div id="dbg" hidden></div>
+    </div>
+
+    <!-- fim -->
+    <div class="prep" id="fim" hidden>
+      <div class="inc-bg" style="background-image:url(/assets/img/avatar.jpg)"></div>
+      <div class="fim-box"><h2>Feliz Natal!</h2><p>A ligação terminou.</p><pre id="resumo"></pre>
+        <button class="btn3d" type="button" onclick="location.reload()">📞 Ligar de novo</button></div>
+    </div>
+  </div>
+</div></main>
+<audio id="ring" src="/assets/audio/toque.mp3" preload="auto" loop></audio>
+<script>
+/* Ligação do Papai Noel — simulação interativa (reconstruída)
+   UM player com som (o próprio vídeo toca imagem + voz, como no funil e no YouTube: volume do aparelho funciona).
+   Camadas MUDAS por cima só nas esperas: loop "ouvindo" e morph de saída.
+   Microfone abre só para ouvir e fecha em seguida. */
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const v = $('v'), ring = $('ring');
+  const DEBUG = new URLSearchParams(location.search).has('debug');
+
+  // ---------- registro (diagnóstico no servidor) ----------
+  const SESSAO = Math.random().toString(36).slice(2, 10), T0 = performance.now(), REG = [];
+  const L = (m) => { REG.push([Math.round(performance.now() - T0), String(m).slice(0, 160)]); if (DEBUG) console.log(m); };
+  const enviarReg = () => { if (!REG.length) return; const corpo = JSON.stringify({ sessao: SESSAO, eventos: REG.splice(0) });
+    try { navigator.sendBeacon('/api/piloto-log', new Blob([corpo], { type: 'application/json' })); } catch {} };
+  setInterval(enviarReg, 4000); addEventListener('pagehide', enviarReg);
+  $('sid').textContent = SESSAO;
+  ['waiting', 'stalled'].forEach((ev) => v.addEventListener(ev, () => L(`vídeo ${ev} em ${v.currentTime.toFixed(2)}`)));
+  // versões antigas deixaram a aba no modo "só reprodução" (o iPhone recusa o microfone com InvalidStateError): volta ao automático
+  const modoAuto = () => { try { if (navigator.audioSession && navigator.audioSession.type !== 'auto') { L('modo de som estava: ' + navigator.audioSession.type); navigator.audioSession.type = 'auto'; } } catch {} };
+  modoAuto();
+
+  // ---------- regras ----------
+  const ESPERA_MAX = 9000, SILENCIO_FIM = 700, FALA_MIN = 180, MARGEM_DB = 11;
+  const PASSO = 0.24, SEG = 0.44, N = 13;            // pontos de saída do loop e duração do morph
+
+  // ---------- estado ----------
+  let roteiro = null;            // { arquivo, pausas, seg? }
+  let modo = 'direto';           // 'direto' (nome na base) | 'pre' (simula com outro nome)
+  let estado = 'parado';         // tocando | pre | ouvindo | pergunta | saindo | fim
+  let espera = null;             // ponto de espera atual
+  let idx = 0, fimEm = Infinity, p0 = 0, ultQuadro = 0;
+  let ac = null, an = null, buf = null, mic = null, micFonte = null, captador = null;
+  let piso = -60, falaMs = 0, silMs = 0, falou = false, amostras = [], gravando = false, enviando = false;
+  const log = [];
+
+  // ---------- nome: busca pelo som ----------
+  const norm = (x) => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  function som(nome) {
+    let x = String(nome || '').toLowerCase().trim().split(/\s+/)[0].replace(/ç/g, 's').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z]/g, '');
+    x = x.replace(/ph/g, 'f').replace(/th/g, 't').replace(/w/g, 'v').replace(/y/g, 'i').replace(/k/g, 'c')
+      .replace(/lh/g, 'li').replace(/nh/g, 'ni').replace(/(ch|sh)/g, 'x').replace(/qu(?=[ei])/g, 'k').replace(/qu/g, 'cu')
+      .replace(/gu(?=[ei])/g, 'g').replace(/g(?=[ei])/g, 'j').replace(/c(?=[ei])/g, 's').replace(/c/g, 'k')
+      .replace(/^h/, '').replace(/h/g, '').replace(/([aeiou])z([aeiou])/g, '$1s$2').replace(/z$/, 's').replace(/ss/g, 's')
+      .replace(/(.)\1+/g, '$1').replace(/us$/, 'os').replace(/u$/, 'o').replace(/e$/, 'i');
+    return x;
+  }
+  const MASC = ['luis', 'luiz', 'davi', 'henri', 'josue', 'noe', 'jose'];
+  const generoDe = (nome) => { const n = norm(nome).split(/\s+/)[0]; if (MASC.includes(n)) return 'o';
+    return /(a|y|ly|eli|li|iz|is|ah|ine|ice|lle|ele|ny)$/.test(n) ? 'a' : 'o'; };
+
+  // ---------- baixar tudo antes de tocar ----------
+  async function baixar(url, rotulo) {
+    const r = await fetch(url); const tot = +r.headers.get('content-length') || 0; const rd = r.body.getReader(); const partes = []; let n = 0;
+    for (;;) { const { done, value } = await rd.read(); if (done) break; partes.push(value); n += value.length;
+      if (rotulo && tot) $('bPrep').textContent = `Conectando ao Polo Norte… ${Math.round(n / tot * 100)}%`; }
+    return URL.createObjectURL(new Blob(partes, { type: 'video/mp4' }));
+  }
+
+  $('bPrep').onclick = async () => {
+    const nome = $('nome').value.trim(); if (!nome) return $('nome').focus();
+    try { ring.muted = true; ring.play().then(() => { ring.pause(); ring.currentTime = 0; ring.muted = false; }).catch(() => {}); } catch {}
+    $('bPrep').disabled = true; $('bPrep').textContent = 'Liberando…';
+    // permissão do microfone (fecha na hora) e câmera sozinha, igual ao funil
+    modoAuto();
+    try {
+      let so;
+      try { so = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+      catch (e1) {
+        L(`microfone 1ª tentativa: ${e1.name}`);
+        if (e1.name !== 'InvalidStateError') throw e1;
+        try { navigator.audioSession.type = 'play-and-record'; } catch {}
+        so = await navigator.mediaDevices.getUserMedia({ audio: true });
+        try { navigator.audioSession.type = 'auto'; } catch {}
+      }
+      so.getTracks().forEach((t) => t.stop());
+    }
+    catch (e) { L(`sem microfone: ${e.name}`); enviarReg(); $('erroMic').hidden = false;
+      $('erroMic').textContent = 'Sem microfone o Papai Noel não consegue te ouvir. Libere o microfone nos ajustes do site (aA → Ajustes do Site) e tente de novo.';
+      $('bPrep').disabled = false; $('bPrep').textContent = 'Tentar de novo'; return; }
+    try { const cam = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
+      $('eu').srcObject = cam; window.__cam = cam; } catch { $('self').classList.remove('on'); }
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    an = ac.createAnalyser(); an.fftSize = 1024; buf = new Float32Array(an.fftSize);
+
+    // escolhe a ligação
+    const [base, sim] = await Promise.all([fetch('/assets/piloto/base/base.json?v=2').then((r) => r.json()), fetch('/assets/piloto/simulacao/simulacao.json?v=4').then((r) => r.json())]);
+    const s = som(nome), igual = base.find((b) => norm(b.nome) === norm(nome) || som(b.nome) === s);
+    if (igual) { modo = 'direto'; roteiro = { arquivo: igual.arquivo, pausas: igual.pausas }; }
+    else {
+      const art = generoDe(nome), lista = [base.filter((b) => b.artigo === art && som(b.nome)[0] === s[0]), base.filter((b) => b.artigo === art), base].find((l) => l.length);
+      const b = lista[Math.floor(Math.random() * lista.length)], m = sim[norm(b.nome)];
+      modo = 'pre'; roteiro = { arquivo: m.arquivo, pausas: m.pausas, seg: m.seg };
+    }
+    L(`nome "${nome}" → ${modo} ${roteiro.arquivo}`);
+
+    // baixa o vídeo da ligação + camadas (loops e morphs) inteiros
+    const camadas = [...new Set(roteiro.pausas.map((p) => p.loop).filter(Boolean))].flatMap((k) => [[`espera-${k}`, `/assets/piloto/espera-${k}.mp4?v=5`], [`morph-${k}`, `/assets/piloto/morph-${k}.mp4?v=5`]]);
+    if (modo === 'pre') camadas.push(['espera-p1', '/assets/piloto/whats/espera-p1.mp4?v=5'], ['espera-p3', '/assets/piloto/whats/espera-p3.mp4?v=5'],
+      ['morph-p1-c2', '/assets/piloto/whats/morph-p1-c2.mp4?v=5'], ['morph-p1-c3', '/assets/piloto/whats/morph-p1-c3.mp4?v=5'],
+      ['morph-p3-c2', '/assets/piloto/whats/morph-p3-c2.mp4?v=5'], ['morph-p3-c4', '/assets/piloto/whats/morph-p3-c4.mp4?v=5']);
+    try {
+      const [u, ...us] = await Promise.all([baixar(roteiro.arquivo + '?v=5', true), ...camadas.map(([, url]) => baixar(url))]);
+      v.src = u; v.load(); camadas.forEach(([id], i) => { const e = $(id); e.src = us[i]; e.load(); });
+    } catch (e) { L('erro ao baixar: ' + e.message); }
+    ring.play().catch(() => {});
+    $('prep').hidden = true; $('inc').hidden = false;
+    try { navigator.vibrate && navigator.vibrate([500, 300, 500, 300, 500]); } catch {}
+  };
+  $('bRecusa').onclick = () => { $('incSub').textContent = 'O Papai Noel quer muito falar com você 🎅'; };
+
+  // ---------- atender ----------
+  $('bAtende').onclick = () => {
+    ring.pause(); try { ac.resume(); } catch {}
+    $('inc').hidden = true; $('call').hidden = false;
+    // libera cada vídeo (já carregado) neste toque — igual ao funil
+    const bless = (m) => { try { const p = m.play(); m.pause(); if (p) p.catch(() => {}); } catch {} };
+    document.querySelectorAll('.espera, .morph').forEach((m) => { if (m.src) { m.muted = true; bless(m); } });
+    v.muted = false; bless(v);
+    if (DEBUG) $('dbg').hidden = false;
+    if (modo === 'pre') { esperas = esperasPre(); fimEm = roteiro.seg.c3[0]; }
+    else { esperas = []; fimEm = Infinity; }
+    idx = 0; v.currentTime = 0; estado = 'tocando'; v.play().catch(() => {}); L('atendeu');
+    requestAnimationFrame(passo);
+  };
+
+  // pontos de espera do pré-roteiro (perguntas de Sim/Não)
+  let esperas = [];
+  function esperasPre() {
+    const g = roteiro.seg;
+    return [{ id: 'q1', para: g.q1 - 0.02, loop: 'p1', tipo: 'simnao' }, { id: 'q2', para: g.q2 - 0.02, loop: 'p3', tipo: 'simnao' }];
+  }
+
+  // ---------- laço (a cada quadro) ----------
+  function passo(ts) {
+    if (estado === 'fim') return;
+    const dt = ultQuadro ? ts - ultQuadro : 16; ultQuadro = ts;
+    const t = v.currentTime; $('tempo').textContent = new Date(Math.max(0, t) * 1000).toISOString().substr(14, 5);
+    const db = nivel();
+
+    if (estado === 'tocando') {
+      conferirSom(t);
+      // perguntas de Sim/Não (pré-roteiro): para no fim da fala
+      const q = esperas.find((e) => !e.feito && t >= e.para && t < e.para + 0.5);
+      if (q) { q.feito = true; perguntar(q); }
+      // pausas da ligação
+      const pa = roteiro.pausas[idx];
+      if (pa && t >= pa.volta + 0.5) idx++;
+      else if (pa && t >= pa.para - 0.03 && t < pa.volta) entrarEspera(pa);
+      if (t >= fimEm - 0.04) return terminar();
+    } else if (estado === 'pre') {
+      const pa = roteiro.pausas[idx]; ouvir(db, dt);
+      if (falou && silMs >= SILENCIO_FIM) { log.push({ p: pa.p, r: 'respondeu sem pausa' }); L(`respondeu antes da pausa: ${pa.p}`); idx++; micFechar(); estado = 'tocando'; }
+      else if (t >= pa.para - 0.03) entrarEspera(pa);
+    } else if (estado === 'ouvindo') {
+      const limiar = ouvir(db, dt), passou = performance.now() - p0;
+      $('ouv').classList.toggle('falando', db > limiar);
+      if ((falou && silMs >= SILENCIO_FIM) || passou >= ESPERA_MAX) sairEspera(falou ? 'respondeu' : 'sem resposta');
+    } else if (estado === 'pergunta') {
+      const limiar = ouvir(db, dt), passou = performance.now() - p0;
+      $('ouv').classList.toggle('falando', db > limiar);
+      if (!enviando && falou && silMs >= 600) transcrever();
+      else if (!enviando && !falou && passou >= 10000) responder('sim', '(sem resposta)');
+    }
+    if (v.ended) return terminar();
+    requestAnimationFrame(passo);
+  }
+
+  // ---------- volta a tocar depois de ouvir: sem som até a fala recomeçar ----------
+  // (o iPhone pode soltar um pedacinho do último som guardado ao voltar; aqui ele cai num trecho mudo)
+  let somEm = null;
+  function voltarATocar(falaEm) {
+    somEm = falaEm != null && falaEm > v.currentTime + 0.05 ? falaEm : null;
+    v.muted = somEm != null; estado = 'tocando';
+    v.play().catch(() => {}); L(`volta a tocar em ${v.currentTime.toFixed(2)}${somEm != null ? ` · som liga em ${somEm.toFixed(2)}` : ''}`);
+  }
+  function conferirSom(t) {
+    if (somEm != null && t >= somEm - 0.04) {
+      somEm = null; v.muted = false; L(`som ligado em ${t.toFixed(2)}`);
+      if (v.paused && estado === 'tocando') { L('iPhone pausou ao ligar o som → retoma'); v.play().catch(() => {}); }
+    }
+  }
+
+  // ---------- esperas (pausas da ligação) ----------
+  function entrarEspera(pa) {
+    v.pause(); estado = 'ouvindo'; espera = pa; zerarOuvido(); L(`pausa: ${pa.p} em ${v.currentTime.toFixed(2)}`);
+    micAbrir();                                           // só agora, com o vídeo parado (abrir com som tocando engasga o iPhone)
+    mostrarLoop(pa.loop);
+    $('ouvTxt').textContent = 'Papai Noel está ouvindo…'; $('ouv').classList.add('on');
+  }
+  function sairEspera(como) {
+    log.push({ p: espera.p, r: como }); L(`resposta (${como}): ${espera.p}`);
+    $('ouv').classList.remove('on', 'falando'); micFechar(); idx++; estado = 'saindo';
+    const t0s = performance.now();
+    sairDoLoop(espera.loop, espera.loop && `morph-${espera.loop}`).then(() => {
+      const falta = Math.max(0, 350 - (performance.now() - t0s));   // dá tempo do iPhone voltar ao modo de som normal
+      const pa = roteiro.pausas[idx - 1]; setTimeout(() => voltarATocar(pa ? pa.volta - 0.05 : null), falta);
+    });
+  }
+
+  // ---------- perguntas de Sim / Não ----------
+  function perguntar(q) {
+    v.pause(); estado = 'pergunta'; espera = q; zerarOuvido(); enviando = false; L(`pergunta ${q.id} em ${v.currentTime.toFixed(2)}`);
+    mostrarLoop(q.loop);
+    $('pergunta').classList.add('on'); $('ouvTxt').textContent = 'Papai Noel está ouvindo…'; $('ouv').classList.add('on');
+    micAbrir().then(() => { amostras = []; gravando = true; });
+  }
+  async function transcrever() {
+    enviando = true; gravando = false; $('ouvTxt').textContent = 'Papai Noel está pensando…';
+    let texto = '';
+    try {
+      const r = await fetch('/api/sim-nao?tipo=audio/wav', { method: 'POST', headers: { 'Content-Type': 'application/octet-stream' }, body: wav(amostras, ac.sampleRate), signal: AbortSignal.timeout(6000) });
+      texto = (await r.json()).texto || '';
+    } catch {}
+    responder(classificar(texto) || 'sim', texto);
+  }
+  function classificar(t) {
+    const x = ' ' + norm(t).replace(/[^a-z ]/g, ' ') + ' ';
+    if (/ (nao|nem|nunca|negativo) /.test(x)) return 'nao';
+    if (/ (sim|pode|claro|quero|bora|vamos|vamo|ok|okay|beleza|uhum|aham|ta|certo|isso|com certeza|pode ser) /.test(x)) return 'sim';
+    return null;
+  }
+  function responder(r, ouvi) {
+    if (estado !== 'pergunta') return;
+    const q = espera; log.push({ p: 'Simular com outro nome?', r, ouvi }); L(`${q.id}: ${r} (ouvi "${ouvi}")`);
+    $('pergunta').classList.remove('on'); $('ouv').classList.remove('on', 'falando'); micFechar(); estado = 'saindo';
+    const g = roteiro.seg;
+    // cada caminho: morph de saída do loop até o 1º quadro do trecho certo; aí pula o MESMO vídeo para lá e segue
+    let falaEm = null;
+    const ir = (morph, alvo, fala) => (falaEm = fala, sairDoLoop(q.loop, morph, () => {
+      v.currentTime = alvo; idx = roteiro.pausas.findIndex((p) => p.fala > alvo); if (idx < 0) idx = roteiro.pausas.length;
+    })).then(() => new Promise((r) => setTimeout(r, 150))).then(() => voltarATocar(falaEm));
+    // "sim" na 1ª e "não" na 2ª: o morph volta ao MESMO quadro da pausa e o vídeo segue dali, contínuo (como saiu do HeyGen)
+    if (q.id === 'q1') { if (r === 'sim') return ir('morph-p1-c2', g.q1, null); fimEm = g.c4[1]; return ir('morph-p1-c3', g.c3[0] + 0.02, null); }
+    if (r === 'sim') { esperas.find((e) => e.id === 'q2').feito = true; fimEm = g.c3[0]; return ir('morph-p3-c2', g.q1, null); }
+    fimEm = g.c4[1]; return ir('morph-p3-c4', g.q2, null);
+  }
+
+  // ---------- camadas: loop "ouvindo" e morph de saída ----------
+  function mostrarLoop(k) {
+    const es = k && $('espera-' + k); if (!es || !es.src) return;
+    es.loop = true; es.currentTime = 0;
+    es.play().then(() => { const mostra = () => es.classList.add('on'); es.requestVideoFrameCallback ? es.requestVideoFrameCallback(mostra) : mostra(); }).catch(() => {});
+  }
+  // espera o próximo ponto de saída do loop (≤ 0,24 s), mostra o morph até o quadro do destino e esconde tudo.
+  // 'antes' roda com o morph cobrindo a tela (é quando o vídeo principal pula para o destino).
+  function sairDoLoop(k, morphId, antes) {
+    return new Promise((ok) => {
+      const es = k && $('espera-' + k), mv = morphId && $(morphId);
+      const pronto = () => { if (antes) antes(); const fim = () => { if (es) { es.classList.remove('on'); es.pause(); } if (mv) mv.classList.remove('on'); ok(); };
+        if (antes) v.addEventListener('seeked', () => requestAnimationFrame(fim), { once: true }); else fim(); };
+      if (!es || !es.classList.contains('on') || !mv || !mv.src) return pronto();
+      let j = Math.ceil((es.currentTime + 0.02) / PASSO); if (j >= N) j = 0;
+      mv.currentTime = j * SEG + 0.001; mv.pause();
+      let ant = es.currentTime;
+      const vigiar = () => {
+        const ct = es.currentTime, chegou = j === 0 ? ct < ant : ct >= j * PASSO - 0.01; ant = ct;
+        if (!chegou) return requestAnimationFrame(vigiar);
+        es.pause(); mv.classList.add('on'); es.classList.remove('on'); L(`saída do loop ${k} → ${morphId} trecho ${j}`);
+        trecho(mv, j * SEG, (j + 1) * SEG).then(pronto);
+      };
+      requestAnimationFrame(vigiar);
+    });
+  }
+  // toca [ini, fim] de um vídeo e para no último quadro (sem vazar para o trecho seguinte)
+  function trecho(mv, ini, fim) {
+    return new Promise((ok) => {
+      let feito = false; const acabar = () => { if (feito) return; feito = true; mv.pause(); ok(); };
+      const ult = fim - 1.2 / 25;
+      if (mv.requestVideoFrameCallback) { const cb = (_, meta) => { if (feito) return; if (meta.mediaTime >= ult) return acabar(); mv.requestVideoFrameCallback(cb); }; mv.requestVideoFrameCallback(cb); }
+      const rodar = () => { if (feito) return; if (mv.currentTime >= ult || mv.ended) return acabar(); requestAnimationFrame(rodar); };
+      mv.currentTime = ini + 0.001; mv.play().then(() => requestAnimationFrame(rodar)).catch(acabar);
+      setTimeout(acabar, (fim - ini) * 1000 + 900);
+    });
+  }
+
+  // ---------- microfone: só para ouvir ----------
+  let micAbrindo = null;
+  function micAbrir() {
+    if (mic) return Promise.resolve();
+    if (micAbrindo) return micAbrindo;
+    micAbrindo = navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } })
+      .then((m) => {
+        mic = m; micFonte = ac.createMediaStreamSource(m); micFonte.connect(an);
+        if (!captador) { captador = ac.createScriptProcessor(4096, 1, 1); captador.onaudioprocess = (e) => { if (gravando) amostras.push(new Float32Array(e.inputBuffer.getChannelData(0))); };
+          const nulo = ac.createGain(); nulo.gain.value = 0; captador.connect(nulo); nulo.connect(ac.destination); }
+        micFonte.connect(captador); L('microfone aberto');
+      }).catch((e) => L('microfone falhou: ' + e.name)).finally(() => { micAbrindo = null; });
+    return micAbrindo;
+  }
+  function micFechar() {
+    gravando = false;
+    if (micAbrindo) { micAbrindo.then(micFechar); return; }
+    if (micFonte) { try { micFonte.disconnect(); } catch {} micFonte = null; }
+    if (mic) { mic.getTracks().forEach((t) => t.stop()); mic = null; L('microfone fechado'); }
+  }
+  function nivel() {
+    if (!mic) return -120;
+    an.getFloatTimeDomainData(buf); let s = 0; for (let i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+    return 20 * Math.log10(Math.sqrt(s / buf.length) + 1e-9);
+  }
+  function zerarOuvido() { p0 = performance.now(); falaMs = 0; silMs = 0; falou = false; }
+  function ouvir(db, dt) {
+    const limiar = Math.max(piso + MARGEM_DB, -52), carencia = performance.now() - p0 < 200 || !mic;
+    if (!carencia && db > limiar) { falaMs += dt; silMs = 0; if (falaMs >= FALA_MIN) falou = true; }
+    else { silMs += dt; if (!falou && mic) { falaMs = Math.max(0, falaMs - dt); piso = piso * 0.97 + db * 0.03; } }
+    const nv = Math.max(0, Math.min(1, (db - limiar + 12) / 24)), m = document.querySelector('.mic');
+    if (m) { m.style.setProperty('--n', 1 + nv * 0.5); m.style.setProperty('--o', nv); }
+    return limiar;
+  }
+  function wav(partes, de) {
+    const total = partes.reduce((n, p) => n + p.length, 0), x = new Float32Array(total); let o = 0;
+    partes.forEach((p) => { x.set(p, o); o += p.length; });
+    const passo = de / 16000, n = Math.floor(total / passo), b = new DataView(new ArrayBuffer(44 + n * 2));
+    const t = (i, s) => [...s].forEach((c, k) => b.setUint8(i + k, c.charCodeAt(0)));
+    t(0, 'RIFF'); b.setUint32(4, 36 + n * 2, true); t(8, 'WAVEfmt '); b.setUint32(16, 16, true); b.setUint16(20, 1, true); b.setUint16(22, 1, true);
+    b.setUint32(24, 16000, true); b.setUint32(28, 32000, true); b.setUint16(32, 2, true); b.setUint16(34, 16, true); t(36, 'data'); b.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) { const s = Math.max(-1, Math.min(1, x[Math.floor(i * passo)])); b.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true); }
+    return new Blob([b], { type: 'audio/wav' });
+  }
+
+  // ---------- barra da chamada ----------
+  $('bMic').onclick = (e) => e.currentTarget.classList.toggle('off');
+  $('bCam').onclick = (e) => { const t = window.__cam && window.__cam.getVideoTracks()[0]; if (!t) return;
+    t.enabled = !t.enabled; e.currentTarget.classList.toggle('off', !t.enabled); $('self').classList.toggle('on', t.enabled); };
+  let frente = true;
+  $('bFlip').onclick = async () => { try { const n = await navigator.mediaDevices.getUserMedia({ video: { facingMode: frente ? 'environment' : 'user' }, audio: false });
+    (window.__cam || n).getTracks().forEach((t) => t !== n.getVideoTracks()[0] && t.stop()); window.__cam = n; $('eu').srcObject = n; frente = !frente; $('self').classList.toggle('back', !frente); } catch {} };
+  $('bEnd').onclick = () => terminar();
+
+  function terminar() {
+    if (estado === 'fim') return; estado = 'fim'; L('fim da ligação');
+    try { v.pause(); document.querySelectorAll('.espera, .morph').forEach((e) => e.pause()); } catch {}
+    micFechar(); if (window.__cam) window.__cam.getTracks().forEach((t) => t.stop()); setTimeout(enviarReg, 50);
+    $('call').hidden = true; $('fim').hidden = false;
+    $('resumo').textContent = log.map((l, i) => `${i + 1}. ${l.p}\n   ${l.r}${l.ouvi ? ` · ouvi: "${l.ouvi}"` : ''}`).join('\n');
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<script src="/config.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#c8102e">
+<meta name="robots" content="noindex">
+<title>Pedido confirmado! 🎅</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/assets/pixel.js?v=2"></script>
+<style>
+:root{--red:#e41b34;--red-hi:#ff4b5f;--red-lo:#b80d22;--red-edge:#7d0716;--gold:#ffd54a;--green:#1f9d55;--ink:#3a1a12;--muted:#8a6a60}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Poppins,-apple-system,sans-serif;color:#fff;background:#7d0716}
+.bg{position:fixed;inset:-40px;background:url(/assets/img/s1-abertura.jpg) center/cover;filter:blur(10px) brightness(.45) saturate(1.2);transform:scale(1.1)}
+.snow{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(3px 3px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 80px 120px,#fff,transparent),radial-gradient(3px 3px at 160px 60px,#fff,transparent),radial-gradient(2px 2px at 240px 180px,#fff,transparent);background-size:300px 220px;animation:snow 12s linear infinite;opacity:.8}
+@keyframes snow{to{background-position:0 220px}}
+main{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;padding:28px 20px}
+.box{width:100%;max-width:420px;text-align:center}
+.ava{width:120px;height:120px;margin:0 auto 14px;border-radius:50%;overflow:hidden;border:4px solid #fff;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:bob 2.4s ease-in-out infinite}
+.ava img{width:100%;height:100%;object-fit:cover}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-3deg)}}
+.ok{display:inline-flex;align-items:center;gap:8px;background:rgba(31,157,85,.95);font-weight:700;font-size:14px;padding:7px 16px;border-radius:999px;margin-bottom:14px}
+h1{font-family:"Dancing Script",cursive;font-size:56px;line-height:1;margin:0 0 10px;text-shadow:0 0 24px rgba(255,213,74,.45),0 4px 16px rgba(0,0,0,.5)}
+p{font-size:16px;line-height:1.5;margin:0 0 18px;opacity:.95;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.card{background:rgba(255,255,255,.96);color:var(--ink);border-radius:24px;padding:22px 18px;box-shadow:0 14px 40px rgba(0,0,0,.35);text-align:center}
+.card h2{margin:0 0 6px;font-size:19px}
+.card .sub{color:var(--muted);font-size:14.5px;margin:0 0 16px;text-shadow:none}
+.btn3d{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:58px;padding:12px 20px;border:0;border-radius:999px;cursor:pointer;font:800 18px Poppins,sans-serif;color:#fff;text-decoration:none;text-shadow:0 2px 0 rgba(0,0,0,.2);
+  background:linear-gradient(180deg,var(--red-hi),var(--red) 45%,var(--red-lo));box-shadow:0 5px 0 var(--red-edge),0 10px 18px rgba(160,20,30,.3),inset 0 2px 0 rgba(255,255,255,.4);transition:transform .08s}
+.btn3d:active{transform:translateY(4px)}
+.btn3d.green{background:linear-gradient(180deg,#3fcf7c,var(--green) 45%,#167a41);box-shadow:0 5px 0 #0c5530,0 10px 18px rgba(20,120,60,.25),inset 0 2px 0 rgba(255,255,255,.4)}
+.pulse{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.03)}}
+.steps{list-style:none;padding:0;margin:0 0 18px;text-align:left;display:flex;flex-direction:column;gap:9px}
+.steps li{display:flex;gap:10px;align-items:center;font-size:14.5px;background:#fff6f2;border-radius:14px;padding:10px 12px}
+.steps li span{font-size:20px}
+.loader{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--muted);font-weight:600;font-size:14.5px;margin-bottom:6px}
+.bell{display:inline-block;font-size:22px;animation:swing .9s ease-in-out infinite alternate}
+@keyframes swing{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.inp{width:100%;border:2px solid #f0dcd5;background:#fffaf8;border-radius:999px;padding:14px 18px;font:500 16px Poppins,sans-serif;outline:none;margin-bottom:10px;color:var(--ink)}
+.inp:focus{border-color:var(--red)}
+.link{display:block;margin-top:12px;background:none;border:0;color:var(--red);font:600 14px Poppins,sans-serif;text-decoration:underline;cursor:pointer}
+.msg{font-size:13.5px;color:#11673a;font-weight:600;min-height:1.2em;margin-top:8px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="snow"></div>
+<main>
+  <div class="box">
+    <div class="ava"><img src="/assets/img/avatar.jpg" alt=""></div>
+    <div class="ok">✔ Pagamento confirmado</div>
+    <h1>Ho ho ho!</h1>
+    <p>Recebi seu pedido aqui no Polo Norte. Agora falta só um passinho para eu preparar a sua ligação. ✨</p>
+
+    <!-- Achando a compra deste aparelho -->
+    <section class="card" id="buscando">
+      <div class="loader"><span class="bell">🔔</span> Abrindo a sua Área Mágica…</div>
+      <p class="sub" style="margin:0">Isso leva só alguns segundos.</p>
+    </section>
+
+    <!-- Encontrou: vai direto -->
+    <section class="card" id="pronto" hidden>
+      <h2>Sua Área Mágica está pronta! 🎄</h2>
+      <p class="sub">Lá você conta como é o seu anjinho e acompanha a videochamada.</p>
+      <a class="btn3d pulse" id="bArea" href="#">✨ Entrar na Área Mágica</a>
+    </section>
+
+    <!-- Não achou neste aparelho: recupera com e-mail + celular da compra -->
+    <section class="card" id="manual" hidden>
+      <h2>Vamos achar a sua Área Mágica 🔑</h2>
+      <p class="sub">Use o e-mail e o celular que você colocou na compra.</p>
+      <form id="fRecuperar">
+        <input class="inp" id="email" type="email" inputmode="email" autocomplete="email" placeholder="E-mail da compra" required>
+        <input class="inp" id="tel4" type="tel" inputmode="numeric" maxlength="4" placeholder="4 últimos dígitos do celular" required>
+        <button class="btn3d" type="submit">✨ Entrar na Área Mágica</button>
+        <div class="msg" id="msg"></div>
+      </form>
+      <p class="sub" style="margin:12px 0 0;font-size:13px">Acabou de pagar? A confirmação pode levar 1 minutinho. Se não entrar, tente de novo.</p>
+    </section>
+  </div>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let chave = null; try { chave = localStorage.getItem('pn_chave'); } catch {}
+  // rastreio do funil (mesma sessão do funil, se houver)
+  try {
+    const j = JSON.parse(localStorage.getItem('pn_sessao') || 'null');
+    if (j && j.id) {
+      const corpo = JSON.stringify({ s: j.id, p: 'obrigado', ev: [['Obrigado', { recuperar: location.search.includes('recuperar') || null }]] });
+      if (!(navigator.sendBeacon && navigator.sendBeacon('/api/track', new Blob([corpo], { type: 'text/plain' })))) fetch('/api/track', { method: 'POST', body: corpo, keepalive: true });
+    }
+  } catch {}
+
+  const mostrar = (id) => ['buscando', 'pronto', 'manual'].forEach((x) => { $(x).hidden = x !== id; });
+
+  async function procurar(tentativa = 0) {
+    if (!chave) return mostrar('manual');
+    try {
+      const r = await fetch('/api/acesso', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chave }) });
+      const j = await r.json();
+      if (j.t) {
+        // Purchase no navegador com o mesmo ID do servidor (a Meta conta uma vez só)
+        if (j.compra && window.fbq) {
+          try {
+            const ja = localStorage.getItem('pn_purchase');
+            if (ja !== j.compra.id) {
+              fbq('track', 'Purchase', { value: j.compra.valor, currency: 'BRL', content_ids: j.compra.itens, content_type: 'product', num_items: j.compra.itens.length }, { eventID: j.compra.id });
+              localStorage.setItem('pn_purchase', j.compra.id);
+            }
+          } catch {}
+        }
+        const url = `/area?t=${encodeURIComponent(j.t)}`;
+        $('bArea').href = url; mostrar('pronto');
+        setTimeout(() => { location.href = url; }, 2200);   // entra sozinho
+        return;
+      }
+    } catch {}
+    // a confirmação da Singlr pode levar alguns segundos: tenta por ~1 min
+    if (tentativa < 20) setTimeout(() => procurar(tentativa + 1), 3000);
+    else mostrar('manual');
+    if (tentativa === 4) mostrar('manual');                  // depois de ~12s já mostra o plano B (e continua tentando)
+  }
+  if (new URLSearchParams(location.search).has('recuperar')) {
+    document.querySelector('.ok').hidden = true;
+    document.querySelector('.box > p').textContent = 'Vamos te levar de volta para a sua Área Mágica. ✨';
+    mostrar('manual');
+  } else procurar();
+
+  $('fRecuperar').onsubmit = async (e) => {
+    e.preventDefault();
+    const msg = $('msg');
+    msg.style.color = '#11673a'; msg.textContent = 'Procurando…';
+    try {
+      const r = await fetch('/api/acesso', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: $('email').value.trim(), tel4: $('tel4').value.replace(/\D/g, '') }) });
+      const j = await r.json().catch(() => ({}));
+      if (j.t) { msg.textContent = 'Achei! Abrindo… 🎄'; location.href = `/area?t=${encodeURIComponent(j.t)}`; return; }
+      msg.style.color = '#b80d22';
+      msg.textContent = r.status === 429 ? 'Muitas tentativas. Espere alguns minutos.' : 'Não encontrei. Confira o e-mail e os 4 últimos dígitos do celular.';
+    } catch { msg.style.color = '#b80d22'; msg.textContent = 'Sem conexão. Tente de novo.'; }
+  };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<script src="/config.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0b0b0f">
+<script>(function(){var u=navigator.userAgent;if(/iP(hone|od|ad)/.test(u)&&/Version\/[\d.]+.*Safari/.test(u)&&!/FBAN|FBAV|FB_IAB|Instagram|CriOS|FxiOS|EdgiOS|GSA/.test(u)&&!navigator.standalone)document.documentElement.classList.add('ios-safari')})();</script>
+<title>Ligação do Papai Noel 🎅</title>
+<meta property="og:title" content="O Papai Noel tem uma mensagem especial para você 🎅">
+<meta property="og:image" content="/assets/img/avatar.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="/assets/img/s1-abertura.jpg">
+<script src="/assets/pixel.js?v=2"></script>
+<link rel="stylesheet" href="/assets/style.css?v=20261106a">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1876174250463589');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1876174250463589&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+</head>
+<body>
+
+<main class="stage">
+  <div class="screen" id="screen">
+    <video id="v" playsinline webkit-playsinline preload="auto" muted poster="/assets/img/s1-abertura.jpg"></video>
+    <div class="shade"></div>
+
+    <!-- Tela de início -->
+    <div class="intro" id="intro">
+      <div class="intro-bg"></div>
+      <div class="intro-box">
+        <div class="intro-pre">Falando com</div>
+        <h1>Papai Noel</h1>
+        <div class="intro-line"></div>
+        <p>A agenda do Papai Noel está aberta! Fale com o bom velhinho e descubra como ele está encantando crianças de todo o Brasil. 🎄</p>
+        <button class="btn3d pulse intro-btn" id="bStart" type="button">📅 Ver agenda</button>
+        <div class="intro-sound">🔊 Ligue o som do celular</div>
+      </div>
+    </div>
+
+    <!-- Ativar som (se o navegador bloquear o play) -->
+    <button class="unmute" id="unmute" type="button" hidden>
+      <span class="unmute-ico">🔇</span>
+      <span>Toque para ouvir o <b>Papai Noel</b></span>
+    </button>
+
+    <!-- Legenda -->
+    <div class="caps" id="caps" aria-hidden="true"></div>
+
+    <!-- Interação -->
+    <section class="panel" id="panel" aria-live="polite"></section>
+
+    <!-- ====== VIDEOCHAMADA ====== -->
+    <div class="call" id="call" hidden>
+
+      <!-- Toque 1: preparar a criança + liberar som -->
+      <div class="prep" id="prep" hidden>
+        <div class="inc-bg" style="background-image:url(/assets/img/avatar.jpg)"></div>
+        <div class="prep-box">
+          <div class="prep-avatar"><img src="/assets/img/avatar.jpg" alt=""></div>
+          <h2>O Papai Noel vai ligar agora! 🎅</h2>
+          <ol>
+            <li><span>🧒</span>Chame a criança para perto</li>
+            <li><span>🔊</span>Aumente o volume do celular</li>
+            <li><span>📷</span>Permita a câmera quando ele pedir</li>
+          </ol>
+          <button class="btn3d" id="bReady" type="button">🔔 Estamos prontos!</button>
+        </div>
+      </div>
+
+      <!-- Toque 2: chamada recebida -->
+      <div class="incoming" id="incoming" hidden>
+        <div class="inc-bg" style="background-image:url(/assets/img/avatar.jpg)"></div>
+        <div class="inc-lock">🔒 Criptografada de ponta a ponta</div>
+        <div class="inc-center">
+          <div class="inc-avatar"><img src="/assets/img/avatar.jpg" alt=""></div>
+          <div class="inc-name">Papai Noel 🎅</div>
+          <div class="inc-sub" id="incSub">Chamada de vídeo recebida…</div>
+        </div>
+        <div class="inc-actions">
+          <div class="inc-btn">
+            <button class="round red" id="decline" type="button" aria-label="Recusar"><svg viewBox="0 0 24 24"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1 0-1.41C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></button>
+            <span>Recusar</span>
+          </div>
+          <div class="inc-btn">
+            <button class="round green pulse" id="accept" type="button" aria-label="Atender"><svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+            <span>Atender</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Em chamada (fica até o Continuar) -->
+      <div class="incall" id="incall" hidden>
+        <div class="ic-top">
+          <div class="ic-name">Papai Noel 🎅</div>
+          <div class="ic-time" id="callTime">Conectando…</div>
+        </div>
+        <div class="self" id="self">
+          <video id="selfV" playsinline webkit-playsinline muted autoplay></video>
+          <div class="self-off"><span>📷</span>Câmera desligada</div>
+        </div>
+        <button class="btn3d ic-continue" id="bContinue" type="button" hidden>Continuar ▶</button>
+        <div class="ic-bar" id="icBar">
+          <button class="ic-b" id="bFlip" type="button" aria-label="Virar câmera"><svg viewBox="0 0 24 24"><path d="M20 5h-3.17L15 3H9L7.17 5H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm-5 11.5V14H9v2.5L5.5 13 9 9.5V12h6V9.5l3.5 3.5-3.5 3.5z"/></svg></button>
+          <button class="ic-b" id="bCam" type="button" aria-label="Câmera"><svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+          <button class="ic-b" id="bMic" type="button" aria-label="Microfone"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg></button>
+          <button class="ic-b end" id="bEnd" type="button" aria-label="Desligar"><svg viewBox="0 0 24 24"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08a.996.996 0 0 1 0-1.41C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28a11.27 11.27 0 0 0-2.67-1.85.996.996 0 0 1-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ OFERTAS ============ -->
+<section class="offers" id="offers" hidden>
+  <div class="promo-bar" id="promoBar" hidden>
+    <div class="promo-t">🎄 <b>Agendamento antecipado</b> · preço especial de novembro acaba em</div>
+    <div class="promo-cd" id="promoCd">
+      <span><b id="cdD">00</b><small>dias</small></span><i>:</i>
+      <span><b id="cdH">00</b><small>horas</small></span><i>:</i>
+      <span><b id="cdM">00</b><small>min</small></span><i>:</i>
+      <span><b id="cdS">00</b><small>seg</small></span>
+    </div>
+  </div>
+  <h2>Escolha como o Papai Noel vai ligar 🎄</h2>
+  <p class="offers-sub">A agenda é limitada. Garanta o horário do seu pequeno.</p>
+  <div class="plans" id="plans"></div>
+  <p class="safe">🔒 Pagamento seguro · Entrega no dia e hora escolhidos</p>
+</section>
+
+<audio id="ring" src="/assets/audio/toque.mp3" preload="auto" loop></audio>
+<script src="/assets/captions.js?v=20261105z"></script>
+<script src="/assets/app.js?v=20261105z"></script>
+</body>
+</html>
