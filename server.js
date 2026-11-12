@@ -12,30 +12,65 @@ app.use(cors());
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
-// Ensure data folder exists
-const dataDir = path.join(__dirname, 'data');
+// Determine writable data dir (on Vercel serverless, /tmp is writable)
+const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const dataDir = isVercel ? '/tmp' : path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
+  try { fs.mkdirSync(dataDir, { recursive: true }); } catch {}
 }
 
 const leadsFile = path.join(dataDir, 'leads.json');
 const ordersFile = path.join(dataDir, 'orders.json');
 
+// In-memory cache to guarantee fast access and persist across serverless warm requests
+const memoryLeads = [];
+const memoryOrders = {};
+
+// Preload bundled initial orders/leads if available
+try {
+  const seedOrders = path.join(__dirname, 'data', 'orders.json');
+  if (fs.existsSync(seedOrders)) {
+    Object.assign(memoryOrders, JSON.parse(fs.readFileSync(seedOrders, 'utf8')));
+  }
+} catch {}
+
 function readJson(file, fallback = {}) {
   try {
     if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
-  } catch (err) {
-    console.error('Error reading JSON:', err.message);
-  }
+  } catch {}
   return fallback;
 }
 
 function writeJson(file, data) {
   try {
     fs.writeFileSync(file, JSON.stringify(data, null, 2));
-  } catch (err) {
-    console.error('Error writing JSON:', err);
-  }
+  } catch {}
+}
+
+function getOrders() {
+  const onDisk = readJson(ordersFile, {});
+  return Object.assign({}, memoryOrders, onDisk);
+}
+
+function saveOrder(order) {
+  memoryOrders[order.t] = order;
+  if (order.id) memoryOrders[order.id] = order;
+  const all = getOrders();
+  all[order.t] = order;
+  if (order.id) all[order.id] = order;
+  writeJson(ordersFile, all);
+}
+
+function getLeads() {
+  const onDisk = readJson(leadsFile, []);
+  return [...memoryLeads, ...onDisk];
+}
+
+function saveLead(lead) {
+  memoryLeads.push(lead);
+  const all = getLeads();
+  all.push(lead);
+  writeJson(leadsFile, all);
 }
 
 // Helper to create a new default order
@@ -74,7 +109,7 @@ app.get('/config.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'config.js'));
 });
 
-// Serve static assets
+// Serve static assets if requested through Express
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Static pages routes
@@ -88,9 +123,9 @@ app.get('/area', (req, res) => res.sendFile(path.join(__dirname, 'area.html')));
 // PAINEL DE ADMINISTRAÇÃO (/admin)
 // ==========================================
 app.get('/admin', (req, res) => {
-  const leads = readJson(leadsFile, []);
-  const orders = readJson(ordersFile, {});
-  const orderList = Object.values(orders);
+  const leads = getLeads();
+  const orders = getOrders();
+  const orderList = Object.values(orders).filter((o, idx, arr) => arr.findIndex(x => x.t === o.t) === idx);
 
   const html = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -130,21 +165,21 @@ app.get('/admin', (req, res) => {
 <body>
   <div class="container">
     <header>
-      <h1>🎅 Painel do Papai Noel · Entregáveis</h1>
-      <div style="font-size:14px;color:#6c757d">Servidor Local Ativo</div>
+      <h1>🎅 Painel do Papai Noel · Gestão</h1>
+      <div style="font-size:14px;color:#6c757d">Status: Online</div>
     </header>
 
     <div class="stats">
       <div class="stat-card">
-        <span>Leads Capturados (Pré-Checkout)</span>
+        <span>Leads Capturados</span>
         <b>${leads.length}</b>
       </div>
       <div class="stat-card">
-        <span>Pedidos Criados</span>
+        <span>Pedidos Cadastrados</span>
         <b>${orderList.length}</b>
       </div>
       <div class="stat-card">
-        <span>Chamadas Prontas / Agendadas</span>
+        <span>Chamadas Agendadas</span>
         <b>${orderList.filter(o => o.configurado).length}</b>
       </div>
     </div>
@@ -175,7 +210,7 @@ app.get('/admin', (req, res) => {
           <tbody>
             ${orderList.map(o => `
             <tr>
-              <td><code>${o.id}</code></td>
+              <td><code>${o.id || o.t.slice(0, 10)}</code></td>
               <td><b>${o.config.nome_crianca || '(Ainda não preencheu)'}</b><br><small style="color:#6c757d">${o.config.para || 'filho'}</small></td>
               <td><span class="badge badge-plan">${o.pacote}</span></td>
               <td>${o.config.dia ? o.config.dia + ' às ' + o.config.hora : 'A definir'}</td>
@@ -226,15 +261,13 @@ app.get('/admin', (req, res) => {
 
 // Ação de criar pedido de teste no Admin
 app.post('/api/admin/criar-pedido-teste', (req, res) => {
-  const orders = readJson(ordersFile, {});
   const order = createDefaultOrder(null, {
     primeiroNome: 'André',
     nome_crianca: 'Lucas',
     pacote: 'nome',
     configurado: false
   });
-  orders[order.t] = order;
-  writeJson(ordersFile, orders);
+  saveOrder(order);
   console.log(`[TEST ORDER CREATED]: Token ${order.t}`);
   res.redirect(`/area?t=${encodeURIComponent(order.t)}`);
 });
@@ -244,7 +277,7 @@ app.post('/api/admin/criar-pedido-teste', (req, res) => {
 // ==========================================
 app.get('/certificado', (req, res) => {
   const { t } = req.query;
-  const orders = readJson(ordersFile, {});
+  const orders = getOrders();
   const order = orders[t] || Object.values(orders)[0] || { config: { nome_crianca: 'Anjinho de Natal' } };
   const nome = order.config?.nome_crianca || 'Anjinho de Natal';
 
@@ -301,19 +334,16 @@ app.get('/certificado', (req, res) => {
 
 // ==========================================
 // WEBHOOK DE PAGAMENTO (/api/webhook)
-// Kiwify, PerfectPay, Kirvano, Hotmart, Mercado Pago, Stripe
 // ==========================================
 app.post('/api/webhook', (req, res) => {
   const payload = req.body || {};
   console.log('[WEBHOOK RECEBIDO]:', JSON.stringify(payload).slice(0, 300));
 
-  // Extract email, phone, name from various gateways
   const email = payload.Customer?.email || payload.email || payload.data?.customer?.email || 'cliente@exemplo.com';
   const nome = payload.Customer?.full_name || payload.name || payload.data?.customer?.name || 'Cliente Especial';
   const telefone = payload.Customer?.mobile || payload.phone || payload.data?.customer?.phone || '11999998888';
   const pacote = (payload.Product?.product_name || payload.product_name || '').toLowerCase().includes('nome') ? 'nome' : 'padrao';
 
-  const orders = readJson(ordersFile, {});
   const order = createDefaultOrder(null, {
     email,
     telefone,
@@ -321,15 +351,14 @@ app.post('/api/webhook', (req, res) => {
     pacote,
     configurado: false
   });
-  orders[order.t] = order;
-  writeJson(ordersFile, orders);
+  saveOrder(order);
 
   console.log(`[VENDA CONFIRMADA]: Cliente ${nome} (${email}) liberado com token: ${order.t}`);
   
   res.json({
     ok: true,
     t: order.t,
-    magicLink: `http://localhost:${PORT}/area?t=${order.t}`
+    magicLink: `/area?t=${order.t}`
   });
 });
 
@@ -341,11 +370,7 @@ app.post('/api/webhook', (req, res) => {
 app.post('/api/lead', (req, res) => {
   const { nome, tel, plano, ref } = req.body || {};
   console.log('[LEAD RECEBIDO]:', { nome, tel, plano, ref });
-  
-  const leads = readJson(leadsFile, []);
-  leads.push({ nome, tel, plano, ref, timestamp: new Date().toISOString() });
-  writeJson(leadsFile, leads);
-
+  saveLead({ nome, tel, plano, ref, timestamp: new Date().toISOString() });
   res.json({ ok: true });
 });
 
@@ -398,14 +423,12 @@ app.post('/api/checkout', (req, res) => {
   const id = 'pix_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 6);
   console.log('[CHECKOUT PIX GERADO]:', id);
 
-  const orders = readJson(ordersFile, {});
   const order = createDefaultOrder(null, {
     pacote: corpo.plano || 'nome',
     primeiroNome: corpo.nome || 'Papai/Mamãe'
   });
-  orders[id] = { id, t: order.t, status: 'pendente', createdAt: Date.now() };
-  orders[order.t] = order;
-  writeJson(ordersFile, orders);
+  saveOrder(order);
+  saveOrder({ id, t: order.t, status: 'pendente', createdAt: Date.now() });
 
   res.json({
     id,
@@ -419,17 +442,17 @@ app.post('/api/checkout', (req, res) => {
 // 5. Checkout polling (Pix auto-approval for demo after 8 seconds)
 app.get('/api/checkout', (req, res) => {
   const { id } = req.query;
-  const orders = readJson(ordersFile, {});
+  const orders = getOrders();
   const order = orders[id];
 
   if (!order) return res.status(404).json({ erro: 'Não encontrado' });
 
-  const elapsed = (Date.now() - order.createdAt) / 1000;
+  const elapsed = (Date.now() - (order.createdAt || 0)) / 1000;
   const pago = elapsed > 8;
 
   if (pago && order.status !== 'pago') {
     order.status = 'pago';
-    writeJson(ordersFile, orders);
+    saveOrder(order);
   }
 
   res.json({ id, pago, t: order.t });
@@ -438,9 +461,8 @@ app.get('/api/checkout', (req, res) => {
 // 6. Access recovery for Thank You page (/obrigado)
 app.post('/api/acesso', (req, res) => {
   const { chave, email, tel4 } = req.body || {};
-  const orders = readJson(ordersFile, {});
+  const orders = getOrders();
 
-  // Find order by chave or token or email
   let matched = null;
   if (chave && orders[chave]) matched = orders[chave];
   else {
@@ -451,10 +473,8 @@ app.post('/api/acesso', (req, res) => {
   }
 
   if (!matched) {
-    // If not found, create one automatically so recovery never fails
     matched = createDefaultOrder(null, { email: email || 'cliente@exemplo.com' });
-    orders[matched.t] = matched;
-    writeJson(ordersFile, orders);
+    saveOrder(matched);
   }
 
   res.json({
@@ -470,14 +490,12 @@ app.post('/api/acesso', (req, res) => {
 // 7. Member Area: GET order details
 app.get('/api/pedido', (req, res) => {
   const { t } = req.query;
-  const orders = readJson(ordersFile, {});
+  const orders = getOrders();
 
   let order = orders[t];
   if (!order) {
-    // Initialize default order if token wasn't in db
     order = createDefaultOrder(t);
-    orders[order.t] = order;
-    writeJson(ordersFile, orders);
+    saveOrder(order);
   }
 
   res.json(order);
@@ -486,7 +504,7 @@ app.get('/api/pedido', (req, res) => {
 // 8. Member Area: POST save order draft or finalize wizard
 app.post('/api/pedido', (req, res) => {
   const { t, config, finalizar } = req.body || {};
-  const orders = readJson(ordersFile, {});
+  const orders = getOrders();
 
   let order = orders[t] || createDefaultOrder(t);
   
@@ -502,50 +520,37 @@ app.post('/api/pedido', (req, res) => {
     console.log(`[PEDIDO FINALIZADO]: Criança "${order.config.nome_crianca}" agendada para ${order.config.dia} às ${order.config.hora}!`);
   }
 
-  orders[order.t] = order;
-  writeJson(ordersFile, orders);
-
+  saveOrder(order);
   res.json(order);
 });
 
 // 9. Upload photos
 app.post('/api/upload', (req, res) => {
   const { t, tipo, imagem } = req.body || {};
-  console.log(`[UPLOAD FOTO]: Tipo ${tipo} para token ${t}`);
-  
-  const orders = readJson(ordersFile, {});
+  const orders = getOrders();
   if (orders[t]) {
     if (tipo === 'sala') orders[t].cameraFoto = imagem;
-    writeJson(ordersFile, orders);
+    saveOrder(orders[t]);
   }
-
   res.json({ ok: true, url: imagem || '/assets/img/avatar.jpg' });
 });
 
 // 10. Voice recognition stub
 app.post('/api/sim-nao', (req, res) => res.json({ resposta: 'sim' }));
-
-// 11. Logs
 app.post('/api/chamada-log', (req, res) => res.json({ ok: true }));
 app.post('/api/piloto-log', (req, res) => res.json({ ok: true }));
+app.get('/api/wa-ligacao', (req, res) => res.json({ ok: true, nome: 'Miguel', artigo: 'o' }));
 
-// 12. WhatsApp lookup
-app.get('/api/wa-ligacao', (req, res) => {
-  res.json({ ok: true, nome: 'Miguel', artigo: 'o' });
-});
-
-// Fallback to index.html
+// Fallback to index.html for unknown routes (only when called as express web server)
 app.use((req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🎅 SISTEMA COMPLETO DO PAPAI NOEL ATIVO!`);
-  console.log(`🌐 Acesse: http://localhost:${PORT}`);
-  console.log(`   - Funil Principal:      http://localhost:${PORT}/`);
-  console.log(`   - Painel Admin:         http://localhost:${PORT}/admin`);
-  console.log(`   - Área Mágica:          http://localhost:${PORT}/area`);
-  console.log(`   - Chamada Personalizada:http://localhost:${PORT}/chamada`);
-  console.log(`   - Página de Obrigado:   http://localhost:${PORT}/obrigado`);
-  console.log(`   - Certificado:          http://localhost:${PORT}/certificado`);
-  console.log(`====================================================`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`🎅 SISTEMA COMPLETO DO PAPAI NOEL ATIVO!`);
+    console.log(`🌐 Acesse: http://localhost:${PORT}`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = app;

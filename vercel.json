@@ -2,9 +2,8 @@
   "version": 2,
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/area", "destination": "/area.html" },
-    { "source": "/obrigado", "destination": "/obrigado.html" },
-    { "source": "/chamada", "destination": "/chamada.html" },
-    { "source": "/piloto-whats", "destination": "/piloto-whats.html" }
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/admin", "destination": "/api/index.js" },
+    { "source": "/certificado", "destination": "/api/index.js" }
   ]
 }
