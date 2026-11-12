@@ -18,8 +18,7 @@ window.CUSTOM_CONFIG = {
   // Prazo final da contagem regressiva da oferta (horário UTC/ISO)
   fimPromo: '2026-12-01T03:00:00Z',
 
-  // Lista dos 3 planos da oferta
-  // Substitua as URLs do 'checkout' pelos links do seu gateway (Kiwify, PerfectPay, Kirvano, Singlr, etc.)
+  // Lista dos 3 planos da oferta integrados com a Cakto Pay
   plans: [
     {
       id: 'padrao',
@@ -34,7 +33,7 @@ window.CUSTOM_CONFIG = {
       ],
       de: '47,90',
       por: '19,90',
-      checkout: 'https://web.singlr.com.br/pagar/RVpHb1ExdjZFQTREdXI1QUpDOEJKc3ZxOjIyOQ=='
+      checkout: 'https://pay.cakto.com.br/34ugxw9_1316438'
     },
     {
       id: 'nome',
@@ -53,7 +52,7 @@ window.CUSTOM_CONFIG = {
       ],
       de: '99,90',
       por: '47,90',
-      checkout: 'https://web.singlr.com.br/pagar/a0UwZ09xd1hzNG1mU0hpN21TbmtTcWNKOjIzMA=='
+      checkout: 'https://pay.cakto.com.br/37h4j78_1316453'
     },
     {
       id: 'premium',
@@ -67,7 +66,7 @@ window.CUSTOM_CONFIG = {
       ],
       de: '147,00',
       por: '99,90',
-      checkout: 'https://web.singlr.com.br/pagar/MzVPeTNtYmZLRFpoMlA0QVg5VjVtbTVZOjIzMQ=='
+      checkout: 'https://pay.cakto.com.br/bw2yker_1316463'
     }
   ]
 };
